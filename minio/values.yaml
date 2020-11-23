@@ -184,11 +184,11 @@ ingress:
     # nginx.ingress.kubernetes.io/whitelist-source-range: 0.0.0.0/0
   path: /
   hosts:
-    - minio.proceedo.net
+    - newminio.proceedo.net
   tls:
     - secretName: proceedo-tls-cert-chain
       hosts:
-        - minio.proceedo.net
+        - newminio.proceedo.net
 
 ## Node labels for pod assignment
 ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
