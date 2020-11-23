@@ -82,7 +82,7 @@ mountPath: "/export"
 ## All mentioned variables will be ignored in values file.
 ## .data.accesskey and .data.secretkey are mandatory,
 ## others depend on enabled status of corresponding sections.
-existingSecret: ""
+existingSecret: "minio"
 
 ## Override the root directory which the minio server should serve from.
 ## If left empty, it defaults to the value of {{ .Values.mountPath }}
@@ -92,7 +92,7 @@ bucketRoot: ""
 # Number of drives attached to a node
 drivesPerNode: 1
 # Number of MinIO containers running
-replicas: 4
+replicas: 1
 # Number of expanded MinIO clusters
 zones: 1
 
@@ -133,7 +133,7 @@ persistence:
   storageClass: ""
   VolumeName: ""
   accessMode: ReadWriteOnce
-  size: 500Gi
+  size: 50Gi
 
   ## If subPath is set mount a sub folder of a volume instead of the root of the volume.
   ## This is especially handy for volume plugins that don't natively support sub mounting (like glusterfs).
@@ -169,11 +169,12 @@ imagePullSecrets: []
 # - name: "image-pull-secret"
 
 ingress:
-  enabled: false
+  enabled: true
   labels: {}
     # node-role.kubernetes.io/ingress: platform
 
-  annotations: {}
+  annotations:
+    kubernetes.io/ingress.class: nginx
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
     # kubernetes.io/ingress.allow-http: "false"
@@ -183,11 +184,11 @@ ingress:
     # nginx.ingress.kubernetes.io/whitelist-source-range: 0.0.0.0/0
   path: /
   hosts:
-    - chart-example.local
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+    - minio.proceedo.net
+  tls:
+    - secretName: proceedo-tls-cert-chain
+      hosts:
+        - minio.proceedo.net
 
 ## Node labels for pod assignment
 ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
@@ -328,7 +329,7 @@ serviceAccount:
 metrics:
   # Metrics can not be disabled yet: https://github.com/minio/minio/issues/7493
   serviceMonitor:
-    enabled: false
+    enabled: true
     additionalLabels: {}
     # namespace: monitoring
     # interval: 30s

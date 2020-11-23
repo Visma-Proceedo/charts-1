@@ -46,22 +46,14 @@ Return the appropriate apiVersion for networkpolicy.
 Return the appropriate apiVersion for deployment.
 */}}
 {{- define "minio.deployment.apiVersion" -}}
-{{- if semverCompare "<1.9-0" .Capabilities.KubeVersion.Version -}}
-{{- print "apps/v1beta2" -}}
-{{- else -}}
 {{- print "apps/v1" -}}
-{{- end -}}
 {{- end -}}
 
 {{/*
 Return the appropriate apiVersion for statefulset.
 */}}
 {{- define "minio.statefulset.apiVersion" -}}
-{{- if semverCompare "<1.17-0" .Capabilities.KubeVersion.Version -}}
-{{- print "apps/v1beta2" -}}
-{{- else -}}
 {{- print "apps/v1" -}}
-{{- end -}}
 {{- end -}}
 
 {{/*
